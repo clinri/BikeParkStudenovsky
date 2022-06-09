@@ -4,10 +4,22 @@ import ru.netology.bikeparkstudenovsky.domain.BikePartItem
 import ru.netology.bikeparkstudenovsky.domain.BikePartsListRepository
 import java.lang.RuntimeException
 
-object BikePartsListRepositoryImpl:BikePartsListRepository {
+object BikePartsListRepositoryImpl : BikePartsListRepository {
 
     private val bikePartsList = mutableListOf<BikePartItem>()
     private var autoIncrementId = 0
+
+    init {
+        for (i in 0 until 10) {
+            val item = BikePartItem(
+                "Вилка $i",
+                "шестигранник на $i",
+                5.5,
+                true
+            )
+            addBikePartItem(item)
+        }
+    }
 
     override fun addBikePartItem(bikePartItem: BikePartItem) {
         if (bikePartItem.id == BikePartItem.UNDEFINED_ID) {

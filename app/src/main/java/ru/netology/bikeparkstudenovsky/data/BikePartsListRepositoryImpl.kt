@@ -1,11 +1,14 @@
 package ru.netology.bikeparkstudenovsky.data
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import ru.netology.bikeparkstudenovsky.domain.BikePartItem
 import ru.netology.bikeparkstudenovsky.domain.BikePartsListRepository
 import java.lang.RuntimeException
 
 object BikePartsListRepositoryImpl : BikePartsListRepository {
 
+    private val bikePartsListLD = MutableLiveData<List<BikePartItem>>()
     private val bikePartsList = mutableListOf<BikePartItem>()
     private var autoIncrementId = 0
 
@@ -26,16 +29,18 @@ object BikePartsListRepositoryImpl : BikePartsListRepository {
             bikePartItem.id = autoIncrementId++
         }
         bikePartsList.add(bikePartItem)
+        updateList()
     }
 
     override fun deleteBikePartItem(bikePartItem: BikePartItem) {
         bikePartsList.remove(bikePartItem)
+        updateList()
     }
 
     override fun editBitePartItem(bikePartItem: BikePartItem) {
         val oldElement = getBikePartItem(bikePartItem.id)
         bikePartsList.remove(oldElement)
-        bikePartsList.add(bikePartItem)
+        addBikePartItem(bikePartItem)
     }
 
     override fun getBikePartItem(bikePartItemId: Int): BikePartItem {
@@ -44,7 +49,11 @@ object BikePartsListRepositoryImpl : BikePartsListRepository {
         } ?: throw RuntimeException("Element with id $bikePartItemId not found")
     }
 
-    override fun getBikePartsList(): List<BikePartItem> {
-        return bikePartsList.toList()
+    override fun getBikePartsList(): LiveData<List<BikePartItem>> {
+        return bikePartsListLD
+    }
+
+    private fun updateList(){
+        bikePartsListLD.value = bikePartsList.toList()
     }
 }

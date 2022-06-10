@@ -13,21 +13,14 @@ class MainViewModel : ViewModel() {
     private val deleteBikePartItemUseCase = DeleteBikePartItemUseCase(repository)
     private val editBikePartItemUseCase = EditBikePartItemUseCase(repository)
 
-    val bikePartsList = MutableLiveData<List<BikePartItem>>()
-
-    fun getBikePartsList() {
-        val list = getBikePartsListUseCase.getBikePartsList()
-        bikePartsList.value = list
-    }
+    val bikePartsList = getBikePartsListUseCase.getBikePartsList()
 
     fun deleteBikePartItem(bikePartItem: BikePartItem) {
         deleteBikePartItemUseCase.deleteBikePartItem(bikePartItem)
-        getBikePartsList()
     }
 
     fun changeEnableState(bikePartItem: BikePartItem){
         val newItem = bikePartItem.copy(enabled = !bikePartItem.enabled)
         editBikePartItemUseCase.editBitePartItem(newItem)
-        getBikePartsList()
     }
 }

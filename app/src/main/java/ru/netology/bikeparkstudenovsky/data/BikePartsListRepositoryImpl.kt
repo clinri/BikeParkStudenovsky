@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import ru.netology.bikeparkstudenovsky.domain.BikePartItem
 import ru.netology.bikeparkstudenovsky.domain.BikePartsListRepository
 import java.lang.RuntimeException
+import kotlin.random.Random
 
 object BikePartsListRepositoryImpl : BikePartsListRepository {
 
@@ -20,7 +21,7 @@ object BikePartsListRepositoryImpl : BikePartsListRepository {
                 "Вилка $i",
                 "шестигранник на $i",
                 5.5,
-                true
+                Random.nextBoolean()
             )
             addBikePartItem(item)
         }

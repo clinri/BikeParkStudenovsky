@@ -27,9 +27,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupRecyclerView(){
+    private fun setupRecyclerView() {
         val rvBikePartList = findViewById<RecyclerView>(R.id.rv_bike_part_list)
-        adapter = BikePartListAdapter()
-        rvBikePartList.adapter = adapter
+        with(rvBikePartList) {
+            adapter = BikePartListAdapter()
+            adapter = adapter
+            recycledViewPool.setMaxRecycledViews(
+                BikePartListAdapter.VIEW_TYPE_ENABLED,
+                BikePartListAdapter.MAX_POOL_SIZE
+            )
+            recycledViewPool.setMaxRecycledViews(
+                BikePartListAdapter.VIEW_TYPE_DISABLED,
+                BikePartListAdapter.MAX_POOL_SIZE
+            )
+        }
     }
 }

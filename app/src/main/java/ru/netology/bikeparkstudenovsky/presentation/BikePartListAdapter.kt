@@ -1,16 +1,18 @@
 package ru.netology.bikeparkstudenovsky.presentation
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.bikeparkstudenovsky.R
 import ru.netology.bikeparkstudenovsky.domain.BikePartItem
+import java.lang.RuntimeException
 
 class BikePartListAdapter : RecyclerView.Adapter<BikePartListAdapter.BikeBartItemViewHolder>() {
 
+    var count = 0
     var bikePartList = listOf<BikePartItem>()
         set(value) {
             field = value
@@ -19,33 +21,38 @@ class BikePartListAdapter : RecyclerView.Adapter<BikePartListAdapter.BikeBartIte
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BikeBartItemViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.itrm_bike_part_enabled, parent, false)
+        Log.d("BikePartListAdapter", "onCreateViewHolder ${++count}")
+        val layout = when (viewType) {
+            VIEW_TYPE_ENABLED -> R.layout.item_bike_part_enabled
+            VIEW_TYPE_DISABLED -> R.layout.item_bike_part_disabled
+            else -> throw RuntimeException("Unknown view type: $viewType")
+        }
+        val view = LayoutInflater.from(parent.context).inflate(layout, parent, false)
         return BikeBartItemViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: BikeBartItemViewHolder, position: Int) {
         val bikePartItem = bikePartList[position]
-        val status = if (bikePartItem.enabled){
-            "Active"
-        } else {
-            "Not active"
-        }
-        holder.tvName.text = "${bikePartItem.name} $status"
+        holder.tvName.text = bikePartItem.name
         holder.tvTools.text = bikePartItem.tools
         holder.tvValue.text = bikePartItem.value.toString()
         holder.itemView.setOnLongClickListener {
             true
         }
-        if (bikePartItem.enabled){
-            holder.tvName.setTextColor(ContextCompat.getColor(holder.itemView.context,android.R.color.holo_red_light))
-        } else {
-            holder.tvName.setTextColor(ContextCompat.getColor(holder.itemView.context,android.R.color.white))
-        }
     }
 
     override fun getItemViewType(position: Int): Int {
-        return position
+        return if (bikePartList[position].enabled) {
+            VIEW_TYPE_ENABLED
+        } else {
+            VIEW_TYPE_DISABLED
+        }
+    }
+
+    companion object {
+        const val VIEW_TYPE_ENABLED = 100
+        const val VIEW_TYPE_DISABLED = 101
+        const val MAX_POOL_SIZE = 15
     }
 
     override fun getItemCount(): Int {

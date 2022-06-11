@@ -2,19 +2,14 @@ package ru.netology.bikeparkstudenovsky.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.bikeparkstudenovsky.R
-import ru.netology.bikeparkstudenovsky.domain.BikePartItem
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var viewModel: MainViewModel
-    private lateinit var adapter: BikePartListAdapter
+    private lateinit var bikePartAdapter: BikePartListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,15 +18,15 @@ class MainActivity : AppCompatActivity() {
         //[] аналог get(MainViewModel::class.java)
         setupRecyclerView()
         viewModel.bikePartsList.observe(this) {
-            adapter.bikePartList = it
+            bikePartAdapter.bikePartList = it
         }
     }
 
     private fun setupRecyclerView() {
         val rvBikePartList = findViewById<RecyclerView>(R.id.rv_bike_part_list)
+        bikePartAdapter = BikePartListAdapter()
         with(rvBikePartList) {
-            adapter = BikePartListAdapter()
-            adapter = adapter
+            adapter = bikePartAdapter
             recycledViewPool.setMaxRecycledViews(
                 BikePartListAdapter.VIEW_TYPE_ENABLED,
                 BikePartListAdapter.MAX_POOL_SIZE

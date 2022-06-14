@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import ru.netology.bikeparkstudenovsky.R
@@ -16,8 +17,10 @@ class BikePartListAdapter : RecyclerView.Adapter<BikePartListAdapter.BikeBartIte
     var count = 0
     var bikePartList = listOf<BikePartItem>()
         set(value) {
+            val callback = BikePartListDiffCallback(bikePartList,value)
+            val diffResult = DiffUtil.calculateDiff(callback)
+            diffResult.dispatchUpdatesTo(this)
             field = value
-            notifyDataSetChanged()
         }
 
     var onBikePartItemLongClickListener: ((BikePartItem) -> Unit)? = null
@@ -25,7 +28,7 @@ class BikePartListAdapter : RecyclerView.Adapter<BikePartListAdapter.BikeBartIte
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BikeBartItemViewHolder {
-        Log.d("BikePartListAdapter", "onCreateViewHolder ${++count}")
+
         val layout = when (viewType) {
             VIEW_TYPE_ENABLED -> R.layout.item_bike_part_enabled
             VIEW_TYPE_DISABLED -> R.layout.item_bike_part_disabled
@@ -36,6 +39,7 @@ class BikePartListAdapter : RecyclerView.Adapter<BikePartListAdapter.BikeBartIte
     }
 
     override fun onBindViewHolder(holder: BikeBartItemViewHolder, position: Int) {
+        Log.d("BikePartListAdapter", "onBindViewHolder ${++count}")
         val bikePartItem = bikePartList[position]
         holder.tvName.text = bikePartItem.name
         holder.tvTools.text = bikePartItem.tools

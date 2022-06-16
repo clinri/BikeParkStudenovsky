@@ -2,26 +2,18 @@ package ru.netology.bikeparkstudenovsky.presentation
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import ru.netology.bikeparkstudenovsky.R
 import ru.netology.bikeparkstudenovsky.domain.BikePartItem
-import java.lang.RuntimeException
 
-class BikePartListAdapter : RecyclerView.Adapter<BikePartListAdapter.BikeBartItemViewHolder>() {
+class BikePartListAdapter :
+    ListAdapter<BikePartItem, BikeBartItemViewHolder>(
+        BikePartItemDiffCallback()
+
+    ) {
 
     var count = 0
-    var bikePartList = listOf<BikePartItem>()
-        set(value) {
-            val callback = BikePartListDiffCallback(bikePartList,value)
-            val diffResult = DiffUtil.calculateDiff(callback)
-            diffResult.dispatchUpdatesTo(this)
-            field = value
-        }
 
     var onBikePartItemLongClickListener: ((BikePartItem) -> Unit)? = null
     var onBikePartItemClickListener: ((BikePartItem) -> Unit)? = null
@@ -40,7 +32,7 @@ class BikePartListAdapter : RecyclerView.Adapter<BikePartListAdapter.BikeBartIte
 
     override fun onBindViewHolder(holder: BikeBartItemViewHolder, position: Int) {
         Log.d("BikePartListAdapter", "onBindViewHolder ${++count}")
-        val bikePartItem = bikePartList[position]
+        val bikePartItem = getItem(position)
         holder.tvName.text = bikePartItem.name
         holder.tvTools.text = bikePartItem.tools
         holder.tvValue.text = bikePartItem.value.toString()
@@ -55,30 +47,16 @@ class BikePartListAdapter : RecyclerView.Adapter<BikePartListAdapter.BikeBartIte
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (bikePartList[position].enabled) {
+        return if (getItem(position).enabled) {
             VIEW_TYPE_ENABLED
         } else {
             VIEW_TYPE_DISABLED
         }
     }
 
-    override fun getItemCount(): Int {
-        return bikePartList.size
-    }
-
-    class BikeBartItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val tvName = view.findViewById<TextView>(R.id.tv_name)
-        val tvTools = view.findViewById<TextView>(R.id.tv_tools)
-        val tvValue = view.findViewById<TextView>(R.id.tv_value)
-    }
-
     companion object {
         const val VIEW_TYPE_ENABLED = 100
         const val VIEW_TYPE_DISABLED = 101
         const val MAX_POOL_SIZE = 15
-    }
-
-    interface OnBikePartItemLongClickListener{
-        fun onBikePartItemLongClick(bikePartItem: BikePartItem)
     }
 }

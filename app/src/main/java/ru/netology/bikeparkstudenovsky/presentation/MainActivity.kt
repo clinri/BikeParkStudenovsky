@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         //[] аналог get(MainViewModel::class.java)
         setupRecyclerView()
         viewModel.bikePartsList.observe(this) {
-            bikePartListAdapter.bikePartList = it
+            bikePartListAdapter.submitList(it)
         }
     }
 
@@ -56,7 +56,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                val item = bikePartListAdapter.bikePartList[viewHolder.adapterPosition]
+                val item = bikePartListAdapter.currentList[viewHolder.adapterPosition]
                 viewModel.deleteBikePartItem(item)
             }
         }

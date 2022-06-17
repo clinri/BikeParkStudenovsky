@@ -1,10 +1,11 @@
 package ru.netology.bikeparkstudenovsky.presentation
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import ru.netology.bikeparkstudenovsky.data.BikePartsListRepositoryImpl
-import ru.netology.bikeparkstudenovsky.domain.*
+import ru.netology.bikeparkstudenovsky.domain.BikePartItem
+import ru.netology.bikeparkstudenovsky.domain.DeleteBikePartItemUseCase
+import ru.netology.bikeparkstudenovsky.domain.EditBikePartItemUseCase
+import ru.netology.bikeparkstudenovsky.domain.GetBikePartsListUseCase
 
 class MainViewModel : ViewModel() {
     private val repository = BikePartsListRepositoryImpl

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="name_hint">Имя узла</string>
+    <string name="tools_hint">Название инструмента, ед. изм.</string>
+    <string name="count_hint">Значение</string>
+    <string name="app_name">Байк-парк Студеновский</string>
+    <string name="add_shop_item_content_description">Добавить позицию части велосипеда</string>
+    <string name="save_btn">Сохранить позицию</string>
+</resources>

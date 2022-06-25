@@ -6,4 +6,7 @@
     <string name="app_name">Байк-парк Студеновский</string>
     <string name="add_shop_item_content_description">Добавить позицию части велосипеда</string>
     <string name="save_btn">Сохранить позицию</string>
+    <string name="error_input_double">некорректное значение</string>
+    <string name="error_input_name" >некорректное имя</string>
+    <string name="error_input_tools" >некорректный инструмент</string>
 </resources>

@@ -68,9 +68,9 @@ class BikePartItemViewModel : ViewModel() {
             _bikePartItem.value?.let {
                 val item = it.copy(name = name, tools = tools, value = value)
                 editBikePartItemUseCase.editBitePartItem(item)
+                finishWork()
             }
         }
-        finishWork()
     }
 
     private fun parseText(inputText: String?): String {
@@ -114,7 +114,7 @@ class BikePartItemViewModel : ViewModel() {
         _errorInputDouble.value = false
     }
 
-    fun finishWork() {
+    private fun finishWork() {
         _canCloseScreen.value = Unit
     }
 }

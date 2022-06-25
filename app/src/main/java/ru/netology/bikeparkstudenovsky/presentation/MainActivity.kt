@@ -1,12 +1,15 @@
 package ru.netology.bikeparkstudenovsky.presentation
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import ru.netology.bikeparkstudenovsky.R
+import ru.netology.bikeparkstudenovsky.presentation.BikePartItemActivity.Companion.newIntentAddItem
+import ru.netology.bikeparkstudenovsky.presentation.BikePartItemActivity.Companion.newIntentEditItem
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,6 +24,11 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerView()
         viewModel.bikePartsList.observe(this) {
             bikePartListAdapter.submitList(it)
+        }
+        val buttonAddItem = findViewById<FloatingActionButton>(R.id.button_add_bike_part_item)
+        buttonAddItem.setOnClickListener{
+            val intent  = newIntentAddItem(this)
+            startActivity(intent)
         }
     }
 
@@ -67,6 +75,8 @@ class MainActivity : AppCompatActivity() {
     private fun setupClickListener() {
         bikePartListAdapter.onBikePartItemClickListener = {
             Log.d("onBikePartItemClickListener", "Clicked on item $it")
+            val intent  = newIntentEditItem(this,it.id)
+            startActivity(intent)
         }
     }
 
